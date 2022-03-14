@@ -1,5 +1,6 @@
-from django.shortcuts import render
 from rest_framework import generics
+from rest_framework import status
+from rest_framework.response import Response
 
 from account.permissions import IsCustomer, IsSellerOrReadOnly
 from .models import Product, Category
@@ -13,6 +14,9 @@ class ProductList(generics.ListCreateAPIView):
     permission_classes = [IsSellerOrReadOnly]
     queryset = Product.objects.all().order_by('created_at')
     serializer_class = ProductSerializer
+
+    def perform_create(self, serializer):
+        return serializer.save(author=self.request.user.seller)
 
 
 class ProductDetailView(generics.RetrieveUpdateDestroyAPIView):
