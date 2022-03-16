@@ -29,7 +29,7 @@ class Product(models.Model):
     image = models.ImageField()
     price = models.DecimalField(decimal_places=2, max_digits=8, validators=[MinValueValidator(Decimal('1.00'))])
     discounted_price = models.DecimalField(decimal_places=2, max_digits=8,
-                                           validators=[MinValueValidator(Decimal('1.00'))])
+                                           validators=[MinValueValidator(Decimal('1.00'))], )
     description = models.TextField(null=True, blank=True)
     is_verified = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)

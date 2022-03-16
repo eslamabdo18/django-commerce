@@ -16,6 +16,9 @@ pillow = "*"
 blank = "*"
 ondelete = "*"
 psycopg2-binary = "*"
+body = "*"
+many = "*"
+django-filter = "*"
 
 [dev-packages]
 coverage = "*"
