@@ -5,7 +5,6 @@ from rest_framework.response import Response
 from account.permissions import IsCustomer, IsSellerOrReadOnly
 from .models import Product, Category
 from .serializers import ProductSerializer, CategorySerializer
-from rest_framework.permissions import IsAuthenticated
 from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
 

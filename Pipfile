@@ -22,10 +22,11 @@ django-filter = "*"
 django-countries = "*"
 django-smart-selects = "*"
 django-cities = "*"
+password = "*"
+drf-yasg = "*"
 
 [dev-packages]
 coverage = "*"
-django-rest-swagger = "*"
 django-extensions = "*"
 ipython = "*"
 
