@@ -19,6 +19,9 @@ psycopg2-binary = "*"
 body = "*"
 many = "*"
 django-filter = "*"
+django-countries = "*"
+django-smart-selects = "*"
+django-cities = "*"
 
 [dev-packages]
 coverage = "*"

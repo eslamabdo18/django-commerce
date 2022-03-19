@@ -29,6 +29,7 @@ ALLOWED_HOSTS = []
 AUTH_USER_MODEL = 'account.User'
 
 # Application definition
+JQUERY_URL = True
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -42,7 +43,8 @@ INSTALLED_APPS = [
     'rest_framework_swagger',
     'account',
     'store',
-    'django_filters'
+    'django_filters',
+    'smart_selects'
 ]
 
 MIDDLEWARE = [
@@ -103,7 +105,7 @@ SIMPLE_JWT = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'eslamdb',
+        'NAME': 'dcom',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
         'HOST': 'localhost',
