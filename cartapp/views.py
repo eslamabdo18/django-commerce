@@ -10,6 +10,7 @@ from drf_yasg.utils import swagger_auto_schema
 # Create your views here.
 from cartapp.models import Cart, CartItem
 from cartapp.serializers import CartSerializer, CartItemSerializer
+from cartapp.services import CartService
 
 
 class CartIdRequestView(generics.GenericAPIView):
@@ -36,14 +37,40 @@ class CartViewV2(generics.GenericAPIView):
         return Response({'payload': CartSerializer(cart).data}, status=status.HTTP_200_OK)
 
 
+class CartItemsViewV2(generics.GenericAPIView):
+    class InputSerializer(serializers.ModelSerializer):
+        class Meta:
+            model = CartItem
+            fields = ('id', 'quantity', 'product')
+            ref_name = 'cart view input'
+
+    @swagger_auto_schema(request_body=InputSerializer, responses={201: 'created'})
+    def post(self, request, id):
+        serializer = self.InputSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        cart, cart_item = CartService.add_to_cart(**serializer.validated_data, cart_id=id)
+        return Response({'payload': CartItemSerializer(cart_item, many=True).data}, status=status.HTTP_200_OK)
+
+    # def batch(self, *args, **kwargs):
+
+
 class CartItemsView(viewsets.ModelViewSet):
+    class CreateInputSerializer(serializers.ModelSerializer):
+        class Meta:
+            model = CartItem
+            fields = ('id', 'quantity', 'product')
+            ref_name = 'CreateInputSerializer'
+
     # http_method_names = ['get']
 
     queryset = CartItem.objects.all().select_related('cart')
-    # lookup_field = 'id'
-    # lookup_field = 'uuid'
 
     serializer_class = CartItemSerializer
+
+    def get_serializer_class(self):
+        if self.action in ["create",]:
+            return self.CreateInputSerializer
+        return super().get_serializer_class()
 
     def get_queryset(self, *args, **kwargs):
         cart_id = self.kwargs.get("cart_uuid")
@@ -52,5 +79,12 @@ class CartItemsView(viewsets.ModelViewSet):
         except Cart.DoesNotExist:
             raise NotFound('A cart with this id does not exist')
         return self.queryset.filter(cart=cart)
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        id = self.kwargs.get("cart_uuid")
+        cart, cart_item = CartService.add_to_cart(**serializer.validated_data, cart_id=id)
+        return Response({'payload': self.get_serializer(cart_item, many=True).data}, status=status.HTTP_200_OK)
 
     # def create(self, *args, **kwargs):

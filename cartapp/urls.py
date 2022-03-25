@@ -35,7 +35,8 @@ app_name = 'cart'
 
 urlpatterns = [
     path('cart/', views.CartIdRequestView.as_view()),
-    path('v2/my-cart/<uuid:id>', views.CartViewV2.as_view())
+    path('v2/my-cart/<uuid:id>', views.CartViewV2.as_view()),
+    path('v2/my-cart/<uuid:id>/items/', views.CartItemsViewV2.as_view())
 ]
 
 urlpatterns += [

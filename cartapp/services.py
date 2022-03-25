@@ -10,9 +10,11 @@ class CartService:
 
     @staticmethod
     @atomic
-    def add_to_cart(quantity: int, product_id: int, cart_id: int = None):
-        cart = Cart.objects.get_or_create(id=cart_id)
-        product = Product.objects.get(id=product_id)
+    def add_to_cart(quantity: int, product: Product, cart_id: str = None):
+        print(cart_id)
+        cart, created = Cart.objects.get_or_create(uuid=cart_id)
+        print(cart)
+        # product = Product.objects.get(id=product)
         cart_item = CartItem.objects.create_or_update_item(quantity=quantity, product=product, cart=cart)
 
         return cart, cart_item
