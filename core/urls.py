@@ -47,6 +47,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('store/', include('store.urls')),
     path('account/', include('account.urls')),
+    path('cartapp/', include('cartapp.urls')),
     path("account/", include("djoser.urls")),
     path("jwt/v1/", include("djoser.urls.jwt")),
     # path('', schema_view),

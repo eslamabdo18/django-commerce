@@ -26,6 +26,7 @@ password = "*"
 drf-yasg = "*"
 djoser = "*"
 address = "*"
+drf-nested-routers = "*"
 
 [dev-packages]
 coverage = "*"
