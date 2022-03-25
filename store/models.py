@@ -1,4 +1,3 @@
-from django.conf import settings
 from decimal import Decimal
 from django.core.validators import MinValueValidator
 from django.db import models
@@ -34,8 +33,8 @@ class Product(models.Model):
     description = models.TextField(null=True, blank=True)
     is_verified = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True , null=True)
+    updated_at = models.DateTimeField(auto_now=True,null=True)
 
     class Meta:
         verbose_name_plural = _('Products')

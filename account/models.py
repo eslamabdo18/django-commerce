@@ -49,8 +49,8 @@ class Address(models.Model):
     country = CountryField()
     post_code = models.CharField(max_length=50)
     customer = models.ForeignKey(Customer, null=True, blank=True, on_delete=models.CASCADE, related_name=_('addresses'))
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True,null=True)
+    updated_at = models.DateTimeField(auto_now=True,null=True)
 
     def __str__(self):
         return self.city
