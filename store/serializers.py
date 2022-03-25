@@ -12,9 +12,9 @@ class ProductSerializer(serializers.ModelSerializer):
 
 
 class CategorySerializer(serializers.ModelSerializer):
-    products = ProductSerializer(many=True)
+    products = ProductSerializer(many=True, read_only=True)
 
     class Meta:
         model = Category
         fields = ('id', 'name', 'description', 'products')
-        read_only_fields = ['products']
+        # read_only_fields = ['products']

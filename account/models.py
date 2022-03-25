@@ -4,6 +4,7 @@ from django.dispatch import receiver
 from django_countries.fields import CountryField
 from .managers import CustomUserManager
 
+from django.utils.translation import gettext_lazy as _
 from django.db import models
 
 
@@ -25,38 +26,37 @@ class User(AbstractUser):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
     objects = CustomUserManager()
-    # USERNAME_FIELD = 'email'
-    # REQUIRED_FIELDS = ['password']
-
-
-class Address(models.Model):
-    city = models.CharField(max_length=200)
-    country = CountryField()
-    post_code = models.CharField(max_length=50)
-
-    def __str__(self):
-        return self.city
 
 
 class Customer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True, related_name='customer')
-    phone_number = models.CharField(max_length=50, unique=True,null=True)
-    address = models.ForeignKey(Address, null=True, blank=True, on_delete=models.CASCADE)
+    phone_number = models.CharField(max_length=50, unique=True, null=True)
+
+    # address = models.ForeignKey(Address, null=True, blank=True, on_delete=models.CASCADE)
 
     @receiver(post_save, sender=User)
     def post_save_receiver(sender, instance, created, **kwargs):
-        # print(instance.RoleChoices.choices)
-        # print(instance)
-        # return
-        if created and instance.role == 2:
-            # print(instance)
-            customer = Customer.objects.create(user=instance)
+        if created and instance.role.Customer:
+            Customer.objects.create(user=instance)
 
     # address = models.CharField(max_length=150, null=True, blank=True)
     class Meta:
         verbose_name_plural = 'Customers'
 
 
+class Address(models.Model):
+    city = models.CharField(max_length=200)
+    country = CountryField()
+    post_code = models.CharField(max_length=50)
+    customer = models.ForeignKey(Customer, null=True, blank=True, on_delete=models.CASCADE, related_name=_('addresses'))
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.city
+
+
+# TODO: add seller logic later
 class Seller(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True, related_name='seller')
     phone_number = models.CharField(max_length=50)

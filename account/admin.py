@@ -47,7 +47,7 @@ class AddressAdmin(admin.ModelAdmin):
 
 @admin.register(Customer)
 class CustomerAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user','phone_number', 'address')
+    list_display = ('id', 'user','phone_number')
 
 
 #

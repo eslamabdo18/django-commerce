@@ -24,6 +24,8 @@ django-smart-selects = "*"
 django-cities = "*"
 password = "*"
 drf-yasg = "*"
+djoser = "*"
+address = "*"
 
 [dev-packages]
 coverage = "*"

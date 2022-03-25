@@ -28,7 +28,7 @@ class ProductList(generics.ListCreateAPIView):
 
 class ProductDetailView(generics.RetrieveUpdateDestroyAPIView):
     # permission_classes = [IsCustomer]
-    print('request.user')
+    # print('request.user')
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
