@@ -1,3 +1,5 @@
+import uuid
+
 from django.contrib.auth.models import AbstractUser
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -31,18 +33,30 @@ class User(AbstractUser):
 
 
 class Customer(models.Model):
+    class StateTypes(models.IntegerChoices):
+        GUEST = 0, 'Guest'
+        CUSTOMER = 1, 'Customer'
+
+    _id = models.UUIDField(default=uuid.uuid4, editable=False)
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True, related_name='customer')
     phone_number = models.CharField(max_length=50, unique=True, null=True)
-    # cartapp = models.ForeignKey(Cart, null=True, blank=True, on_delete=models.CASCADE, related_name=_('customer'))
+    state = models.IntegerField(choices=StateTypes.choices, default=0)
 
-    # address = models.ForeignKey(Address, null=True, blank=True, on_delete=models.CASCADE)
+    def save(self, *args, **kwargs):
+        if self.user:
+            self.state = self.StateTypes.CUSTOMER
+        super(Customer, self).save(*args, **kwargs)
+    # @receiver(post_save, sender=User)
+    # def post_save_receiver(sender, instance, created, **kwargs):
+    #     if created and \
+    #             instance.role == instance.RoleChoices.CUSTOMER:
+    #
+    #         # print()
+    #         print(instance.__dict__)
+    #         # self.user = instance
+    #         # self.state = self.StateTypes.CUSTOMER
+    #         # self.save()
 
-    @receiver(post_save, sender=User)
-    def post_save_receiver(sender, instance, created, **kwargs):
-        if created and instance.role.Customer:
-            Customer.objects.create(user=instance)
-
-    # address = models.CharField(max_length=150, null=True, blank=True)
     class Meta:
         verbose_name_plural = 'Customers'
 
@@ -52,8 +66,8 @@ class Address(models.Model):
     country = CountryField()
     post_code = models.CharField(max_length=50)
     customer = models.ForeignKey(Customer, null=True, blank=True, on_delete=models.CASCADE, related_name=_('addresses'))
-    created_at = models.DateTimeField(auto_now_add=True,null=True)
-    updated_at = models.DateTimeField(auto_now=True,null=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
         return self.city

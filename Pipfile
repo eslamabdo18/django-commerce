@@ -27,6 +27,7 @@ drf-yasg = "*"
 djoser = "*"
 address = "*"
 drf-nested-routers = "*"
+guest = "*"
 
 [dev-packages]
 coverage = "*"

@@ -8,6 +8,7 @@ from rest_framework.response import Response
 from drf_yasg.utils import swagger_auto_schema
 
 # Create your views here.
+from account.models import Customer
 from cartapp.models import Cart, CartItem
 from cartapp.serializers import CartSerializer, CartItemSerializer
 from cartapp.services import CartService
@@ -18,7 +19,8 @@ class CartIdRequestView(generics.GenericAPIView):
     def get(self, request):
         if not request.session.get('cart_id'):
             print(request.session.get('cart_id'))
-            cart = Cart.objects.create()
+            customer = Customer.objects.get(_id=request.session['guest_user_id'])
+            cart = Cart.objects.create(customer=customer)
             request.session['cart_id'] = str(cart.uuid)
         return Response({'cart_id': request.session['cart_id']}, status=status.HTTP_201_CREATED)
 
@@ -68,7 +70,7 @@ class CartItemsView(viewsets.ModelViewSet):
     serializer_class = CartItemSerializer
 
     def get_serializer_class(self):
-        if self.action in ["create",]:
+        if self.action in ["create", ]:
             return self.CreateInputSerializer
         return super().get_serializer_class()
 

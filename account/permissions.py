@@ -12,9 +12,9 @@ class IsCustomer(BasePermission):
 
 class IsSellerOrReadOnly(BasePermission):
     def has_permission(self, request, view):
-        print(request.user)
-        # if request.method in SAFE_METHODS:
-        #     return True
+        # print(request.user)
+        if request.method in SAFE_METHODS:
+            return True
 
         if hasattr(request.user, 'seller'):
             print(request.user.seller)

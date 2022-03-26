@@ -20,6 +20,7 @@ class Cart(models.Model):
     status = models.IntegerField(choices=StatusTypes.choices, )
     uuid = models.UUIDField(default=uuid.uuid4, editable=False)
     expires = models.BooleanField(default=False)
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name=_('cart'), null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -32,7 +33,6 @@ class Cart(models.Model):
 class CartItem(models.Model):
     quantity = models.PositiveIntegerField()
     price = models.DecimalField(decimal_places=2, max_digits=8, validators=[MinValueValidator(Decimal('1.00'))])
-    # total_price = models.DecimalField(decimal_places=2, max_digits=8, validators=[MinValueValidator(Decimal('1.00'))])
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name=_('cart_item'))
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name=_('cart_items'))
     created_at = models.DateTimeField(auto_now_add=True)

@@ -15,7 +15,7 @@ class CustomCartItemManager(models.Manager):
         # cart = Cart.objects.get(cart=cart, product=product)
         cart_item = self.filter(cart=cart.id, product=product).first()
         if cart_item:
-            qyt = quantity + cart_item.quantity
+            qyt = quantity
             self.update(quantity=qyt, **extra_fields)
         else:
             self.create(cart=cart, product=product,price=product.price,quantity=quantity, **extra_fields)

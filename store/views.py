@@ -12,7 +12,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 # Create your views here.
 
 class ProductList(generics.ListCreateAPIView):
-    permission_classes = [IsSellerOrReadOnly]
+    # permission_classes = [IsSellerOrReadOnly]
     queryset = Product.objects.all().order_by('created_at')
     serializer_class = ProductSerializer
     filter_backends = (filters.SearchFilter, DjangoFilterBackend)
