@@ -6,9 +6,9 @@ from .models import Product, Category
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('title', 'price',)
+    list_display = ('id', 'title', 'price',)
 
 
 @admin.register(Category)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('name', 'description',)
+    list_display = ('id','name', 'description',)
