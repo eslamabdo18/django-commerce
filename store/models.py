@@ -26,7 +26,7 @@ class Product(models.Model):
     title = models.CharField(max_length=255)
     author = models.ForeignKey(Seller, on_delete=models.CASCADE, related_name='products')
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products')
-    image = models.ImageField(upload_to='static/store/images')
+    image = models.ImageField()
     price = models.DecimalField(decimal_places=2, max_digits=8, validators=[MinValueValidator(Decimal('1.00'))])
     discounted_price = models.DecimalField(decimal_places=2, max_digits=8,
                                            validators=[MinValueValidator(Decimal('1.00'))], )
